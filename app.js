@@ -23,8 +23,21 @@ function addEvent(event){
   console.log("event target", event.target)
 
   const newEventFormData = new FormData(event.target)
-  const newEventName = newEventFormData.get("name")
-  console.log(newEventName, "newEventName")
+  const name = newEventFormData.get("name")
+  const description = newEventFormData.get("description")
+  // console.log(newEventName, "newEventName", newEventDescription)
+  const newEvent = {name, description}
+
+  displayEvent(newEvent)
+
+  fetch(eventsURL, {
+    method: "POST",
+    headers:{
+      "Content-Type": "application/json"
+    },
+    body:JSON.stringify({name, description})
+  })
+
 }
 
 
