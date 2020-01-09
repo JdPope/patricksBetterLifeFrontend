@@ -4,12 +4,29 @@ const baseURL = "http://localhost:3000/"
 const usersURL = "http://localhost:3000/users/"
 const eventsURL = "http://localhost:3000/events/"
 
+let eventsSection
+let createEvent
+
 function postLoad() {
+  eventsSection = document.querySelector(".events")
+  createEvent = document.querySelector(".create-event")
+
     fetch(eventsURL)
         .then(parseJSON)
         .then(extractData)
         .then(events => events.map(displayEvent));
+  createEvent.addEventListener('submit', addEvent)
 }
+
+function addEvent(event){
+  event.preventDefault()
+  console.log("event target", event.target)
+
+  const newEventFormData = new FormData(event.target)
+  const newEventName = newEventFormData.get("name")
+  console.log(newEventName, "newEventName")
+}
+
 
 function displayEvent(event) {
     const eventCard = document.createElement("div");
@@ -22,7 +39,7 @@ function displayEvent(event) {
     eventName.textContent = event.name;
     eventDescription.textContent = event.description;
 
-    eventCard.append(eventName, eventDescription, deleteButton);
+    eventCard.append(eventName, eventDescription);
 
     eventsSection.append(eventCard);
 }
